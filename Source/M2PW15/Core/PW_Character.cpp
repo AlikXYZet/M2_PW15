@@ -24,7 +24,7 @@ APW_Character::APW_Character()
     // Камера от первого лица
     FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
     FirstPersonCameraComponent->SetupAttachment(RootComponent);
-    FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, 00.f, 48.f));
+    FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, 0.f, 48.f));
     //FirstPersonCameraComponent->SetRelativeRotation(FRotator(0.f, 90.f, -90.f));
     FirstPersonCameraComponent->bUsePawnControlRotation = true;
     //-------------------------------------------
