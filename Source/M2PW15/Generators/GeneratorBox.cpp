@@ -4,6 +4,7 @@
 #include "GeneratorBox.h"
 
 // UE:
+#include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 //--------------------------------------------------------------------------------------
@@ -21,12 +22,19 @@ AGeneratorBox::AGeneratorBox()
     /* ---   Components   --- */
 
     // Корневой компонент
-    //RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+    RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
+    // Билборд для упращения прямого взаимодействия в конструкторе
+    Billboard = CreateDefaultSubobject<UBillboardComponent>(TEXT("Billboard Interactions"));
+    Billboard->SetupAttachment(RootComponent);
+    Billboard->SetComponentTickEnabled(false);
 
     // Область (зона) генерации
     Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Generation Zone"));
-    //Box->SetupAttachment(RootComponent);
+    Box->SetupAttachment(RootComponent);
+    Box->SetComponentTickEnabled(false);
     Box->SetBoxExtent(FVector(50.f));
+    Box->SetGenerateOverlapEvents(false);
     Box->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
     //-------------------------------------------
 }
@@ -38,11 +46,11 @@ AGeneratorBox::AGeneratorBox()
 
 void AGeneratorBox::ReGenerate()
 {
-    DeleteGeneratedObjects();
+    DeleteGeneratedActors();
     Generate();
 }
 
-void AGeneratorBox::DeleteGeneratedObjects()
+void AGeneratorBox::DeleteGeneratedActors()
 {
     TArray<AActor*> lResultActors;
 

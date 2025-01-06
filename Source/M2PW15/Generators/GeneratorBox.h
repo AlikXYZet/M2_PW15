@@ -18,6 +18,7 @@
 /* ---   Pre-declaration of classes and structures   --- */
 
 // UE:
+class UBillboardComponent;
 class UBoxComponent;
 //--------------------------------------------------------------------------------------
 
@@ -40,6 +41,10 @@ public:
 
     /* ---   Components   --- */
 
+    // Билборд для упрощения прямого взаимодействия в конструкторе
+    UPROPERTY(VisibleAnywhere)
+    UBillboardComponent* Billboard;
+
     // Область (зона) генерации
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components,
         meta = (AllowPrivateAccess = "true"))
@@ -60,7 +65,7 @@ public:
     /** Удалить сгенерируемые Акторы */
     UFUNCTION(BlueprintCallable, CallInEditor,
         Category = "Generator")
-    void DeleteGeneratedObjects();
+    void DeleteGeneratedActors();
     //-------------------------------------------
 
 
