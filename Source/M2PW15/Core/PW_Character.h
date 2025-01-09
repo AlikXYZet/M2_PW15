@@ -16,6 +16,10 @@
 
 // UE:
 class UCameraComponent;
+class USphereComponent;
+
+// Interaction:
+class AChickenCharacter;
 //--------------------------------------------------------------------------------------
 
 
@@ -41,6 +45,11 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components,
         meta = (AllowPrivateAccess = "true"))
     UCameraComponent* FirstPersonCameraComponent;
+
+    // Сфера коллизии для запуска реакции
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components,
+        meta = (AllowPrivateAccess = "true"))
+    USphereComponent* ReactionsCollision;
     //-------------------------------------------
 
 
@@ -65,18 +74,44 @@ public:
 
 
 
+    /* ---   Components   --- */
+
+    // BeginOverlap для компонента Коллизии Реакции
+    UFUNCTION()
+    void BeginOverlap_Reaction(
+        UPrimitiveComponent* OverlappedComponent,
+        AActor* OtherActor,
+        UPrimitiveComponent* OtherComp,
+        int32 OtherBodyIndex,
+        bool bFromSweep,
+        const FHitResult& SweepResult);
+
+    // EndOverlap для компонента Коллизии Реакции
+    UFUNCTION()
+    void EndOverlap_Reaction(
+        UPrimitiveComponent* OverlappedComponent,
+        AActor* OtherActor,
+        UPrimitiveComponent* OtherComp,
+        int32 OtherBodyIndex);
+    //-------------------------------------------
+
+
+
     /* ---   Input Action   --- */
 
     // Флаг блокировки управления игрока
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Movement")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite,
+        Category = "Settings|Movement")
     bool bPlayerControlLock = false;
 
     // Базовая скорость поворота, град/сек
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings|Camera")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly,
+        Category = "Settings|Camera")
     float BaseTurnRate = 1.f;
 
     // Базовая скорость обзора вверх/вниз в градусах в секунду
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings|Camera")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly,
+        Category = "Settings|Camera")
     float BaseLookUpRate = 1.f;
 
     //

@@ -5,6 +5,10 @@
 
 // UE:
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
+
+// Interaction:
+#include "M2PW15/NPC/ChickenCharacter.h"
 //--------------------------------------------------------------------------------------
 
 
@@ -17,6 +21,8 @@ APW_Character::APW_Character()
     // Set this character to call Tick() every frame.
     // You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = false; // Предварительно
+    //-------------------------------------------
+
 
 
     /* ---   Components   --- */
@@ -27,6 +33,12 @@ APW_Character::APW_Character()
     FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, 0.f, 48.f));
     //FirstPersonCameraComponent->SetRelativeRotation(FRotator(0.f, 90.f, -90.f));
     FirstPersonCameraComponent->bUsePawnControlRotation = true;
+
+    // Сфера коллизии для запуска реакции
+    ReactionsCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Reactions"));
+    ReactionsCollision->SetupAttachment(RootComponent);
+    ReactionsCollision->OnComponentBeginOverlap.AddDynamic(this, &APW_Character::BeginOverlap_Reaction);
+    ReactionsCollision->OnComponentEndOverlap.AddDynamic(this, &APW_Character::EndOverlap_Reaction);
     //-------------------------------------------
 }
 //--------------------------------------------------------------------------------------
@@ -47,6 +59,37 @@ void APW_Character::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+}
+//--------------------------------------------------------------------------------------
+
+
+
+/* ---   Components   --- */
+
+void APW_Character::BeginOverlap_Reaction(
+    UPrimitiveComponent* OverlappedComponent,
+    AActor* OtherActor,
+    UPrimitiveComponent* OtherComp,
+    int32 OtherBodyIndex,
+    bool bFromSweep,
+    const FHitResult& SweepResult)
+{
+    if (AChickenCharacter* lChicken = Cast<AChickenCharacter>(OtherActor))
+    {
+        lChicken->SetCurrentCharacter(this);
+    }
+}
+
+void APW_Character::EndOverlap_Reaction(
+    UPrimitiveComponent* OverlappedComponent,
+    AActor* OtherActor,
+    UPrimitiveComponent* OtherComp,
+    int32 OtherBodyIndex)
+{
+    if (AChickenCharacter* lChicken = Cast<AChickenCharacter>(OtherActor))
+    {
+        lChicken->SetCurrentCharacter(nullptr);
+    }
 }
 //--------------------------------------------------------------------------------------
 
