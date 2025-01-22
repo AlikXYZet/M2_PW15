@@ -12,7 +12,8 @@ public class M2PW15 : ModuleRules
             "Core",
             "CoreUObject",
             "Engine",
-            "InputCore" });
+            "InputCore",
+            "AnimationBudgetAllocator" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
