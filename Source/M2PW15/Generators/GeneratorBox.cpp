@@ -7,6 +7,11 @@
 #include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+
+// For visualization via 'Intelli Sense'
+#if WITH_EDITOR
+#include "M2PW15/Tools/BlueprintLibraries/AnimationSharingBlueprintLibrary.h"
+#endif // WITH_EDITOR
 //--------------------------------------------------------------------------------------
 
 
